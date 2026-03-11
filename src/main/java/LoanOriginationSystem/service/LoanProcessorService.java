@@ -21,9 +21,6 @@ public class LoanProcessorService {
     public LoanProcessorService(LoanRepository loanRepository) {
         this.loanRepository = loanRepository;
         this.loanProcessor = Executors.newFixedThreadPool(5);
-        for(int i = 0; i < 5; i++){
-            loanProcessor.submit(this::processLoan);
-        }
     }
 
     @PostConstruct
