@@ -1,6 +1,6 @@
 package LoanOriginationSystem.dto;
 
-import LoanOriginationSystem.LoanType;
+import LoanOriginationSystem.enums.LoanType;
 import lombok.Getter;
 
 @Getter
