@@ -5,6 +5,7 @@ import LoanOriginationSystem.entity.Loan;
 import LoanOriginationSystem.entity.LoanAssignment;
 import LoanOriginationSystem.enums.AgentStatus;
 import LoanOriginationSystem.repository.AgentRepository;
+import LoanOriginationSystem.repository.LoanAssignmentRepository;
 import LoanOriginationSystem.repository.LoanRepository;
 import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
@@ -20,23 +21,25 @@ public class AgentAssignmentService {
     private final ExecutorService agentAssigner;
     private final AgentRepository agentRepository;
     private final LoanRepository loanRepository;
+    private final LoanAssignmentRepository loanAssignmentRepository;
 
-    public AgentAssignmentService( AgentRepository agentRepository, LoanRepository loanRepository) {
+    public AgentAssignmentService(AgentRepository agentRepository, LoanRepository loanRepository, LoanAssignmentRepository loanAssignmentRepository) {
         this.agentRepository = agentRepository;
         this.loanRepository = loanRepository;
+        this.loanAssignmentRepository = loanAssignmentRepository;
         this.agentAssigner = Executors.newFixedThreadPool(5);
     }
 
     @PostConstruct
     private void startWorkers(){
         for(int i = 0; i < 5; i++){
-            agentAssigner.submit(this::assignAgents);
+            agentAssigner.submit(this::workerLoop);
         }
     }
 
     private void workerLoop(){
         while(true){
-                assignAgents();
+            assignAgents();
         }
     }
 
@@ -55,7 +58,6 @@ public class AgentAssignmentService {
                 loanAssignment.setLoan(loan);
                 loanAssignment.setAgent(agent);
                 agentRepository.save(agent);
-                loanRepository.save(loan);
             }
         }
     }
