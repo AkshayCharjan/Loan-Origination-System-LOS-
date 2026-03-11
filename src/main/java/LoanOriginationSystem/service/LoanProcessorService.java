@@ -26,35 +26,38 @@ public class LoanProcessorService {
     @PostConstruct
     private void startWorkers(){
         for(int i = 0; i < 5; i++){
-            loanProcessor.submit(this::processLoan);
+            loanProcessor.submit(this::processLoans);
         }
     }
 
     @Transactional
-    private void processLoan() {
+    private void processLoans() {
         while(true) {
-            try {
-                List<Loan> loans = loanRepository.fetchLoansForProcessing(10);
+            processBatch();
+        }
+    }
 
-                for (Loan loan : loans) {
-                    Thread.sleep(25000); //simulate System checks
+    private void processBatch(){
+        try {
+            List<Loan> loans = loanRepository.fetchLoansForProcessing(10);
 
-                    int decision = random.nextInt(3);
-                    if (decision == 0) {
-                        loan.setApplicationStatus(ApplicationStatus.APPROVED_BY_SYSTEM);
-                    } else if (decision == 1) {
-                        loan.setApplicationStatus(ApplicationStatus.REJECTED_BY_SYSTEM);
-                    } else {
-                        loan.setApplicationStatus(ApplicationStatus.UNDER_REVIEW);
-                    }
+            for (Loan loan : loans) {
+                Thread.sleep(25000); //simulate System checks
 
-                    loanRepository.save(loan);
+                int decision = random.nextInt(3);
+                if (decision == 0) {
+                    loan.setApplicationStatus(ApplicationStatus.APPROVED_BY_SYSTEM);
+                } else if (decision == 1) {
+                    loan.setApplicationStatus(ApplicationStatus.REJECTED_BY_SYSTEM);
+                } else {
+                    loan.setApplicationStatus(ApplicationStatus.UNDER_REVIEW);
                 }
-            } catch(InterruptedException e) {
-                Thread.currentThread().interrupt();
-                System.out.println("Loan processor interrupted");
-                break;
+
+                loanRepository.save(loan);
             }
+        } catch(InterruptedException e) {
+            Thread.currentThread().interrupt();
+            System.out.println("Loan processor interrupted");
         }
     }
 }
