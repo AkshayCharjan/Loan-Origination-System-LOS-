@@ -5,6 +5,8 @@ import LoanOriginationSystem.entity.Loan;
 import LoanOriginationSystem.repository.LoanRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public class LoanRegistrationService {
     private final LoanRepository loanRepository;
@@ -13,7 +15,7 @@ public class LoanRegistrationService {
         this.loanRepository = loanRepository;
     }
 
-    public void registerLoan(LoanRequestDTO loanRequest){
+    public UUID registerLoan(LoanRequestDTO loanRequest){
         Loan loan = new Loan(
                 loanRequest.getCustomerName(),
                 loanRequest.getCustomerPhone(),
@@ -22,5 +24,6 @@ public class LoanRegistrationService {
         );
 
         loanRepository.save(loan);
+        return loan.getLoanId();
     }
 }
