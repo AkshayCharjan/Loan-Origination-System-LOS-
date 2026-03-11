@@ -4,6 +4,7 @@ import LoanOriginationSystem.entity.Loan;
 import LoanOriginationSystem.enums.ApplicationStatus;
 import LoanOriginationSystem.repository.LoanRepository;
 import jakarta.annotation.PostConstruct;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,6 +33,7 @@ public class LoanProcessorService {
         }
     }
 
+    @Transactional
     private void processLoan() {
         while(true) {
             try {

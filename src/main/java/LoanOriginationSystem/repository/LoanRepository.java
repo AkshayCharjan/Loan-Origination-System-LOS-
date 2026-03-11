@@ -21,4 +21,18 @@ public interface LoanRepository extends JpaRepository<Loan, UUID> {
             nativeQuery = true
     )
     List<Loan> fetchLoansForProcessing(@Param("limit") int limit);
+
+
+
+    @Query(
+            value = """
+            SELECT *
+            FROM loan
+            WHERE application_status = 'UNDER_REVIEW'
+            LIMIT :limit
+            FOR UPDATE SKIP LOCKED
+            """,
+            nativeQuery = true
+    )
+    List<Loan> fetchLoansForReview(@Param("limit") int limit);
 }
