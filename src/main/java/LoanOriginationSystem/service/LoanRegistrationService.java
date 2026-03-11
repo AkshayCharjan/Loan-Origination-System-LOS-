@@ -3,7 +3,9 @@ package LoanOriginationSystem.service;
 import LoanOriginationSystem.dto.LoanRequestDTO;
 import LoanOriginationSystem.entity.Loan;
 import LoanOriginationSystem.repository.LoanRepository;
+import org.springframework.stereotype.Service;
 
+@Service
 public class LoanRegistrationService {
     private final LoanRepository loanRepository;
 

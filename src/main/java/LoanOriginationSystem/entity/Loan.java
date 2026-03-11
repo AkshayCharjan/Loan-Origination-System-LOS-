@@ -1,16 +1,20 @@
 package LoanOriginationSystem.entity;
 
-import LoanOriginationSystem.LoanType;
+import LoanOriginationSystem.enums.ApplicationStatus;
+import LoanOriginationSystem.enums.LoanType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.UuidGenerator;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @NoArgsConstructor
+@Getter
 @Entity
 public class Loan {
 
@@ -22,6 +26,9 @@ public class Loan {
     private String customerPhone;
     private int loanAmount;
     private LoanType loanType;
+
+    @Setter
+    private ApplicationStatus applicationStatus;
     private LocalDateTime createdAt;
 
     public Loan(String customerName, String customerPhone, int loanAmount, LoanType loanType) {
@@ -29,6 +36,7 @@ public class Loan {
         this.customerPhone = customerPhone;
         this.loanAmount = loanAmount;
         this.loanType = loanType;
+        this.applicationStatus = ApplicationStatus.APPLIED;
         this.createdAt = LocalDateTime.now();
     }
 }
