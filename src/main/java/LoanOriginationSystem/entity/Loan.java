@@ -2,9 +2,7 @@ package LoanOriginationSystem.entity;
 
 import LoanOriginationSystem.enums.ApplicationStatus;
 import LoanOriginationSystem.enums.LoanType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -28,6 +26,7 @@ public class Loan {
     private LoanType loanType;
 
     @Setter
+    @Enumerated(EnumType.STRING)
     private ApplicationStatus applicationStatus;
     private LocalDateTime createdAt;
 

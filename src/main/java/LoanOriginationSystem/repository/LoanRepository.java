@@ -15,6 +15,7 @@ public interface LoanRepository extends JpaRepository<Loan, UUID> {
             SELECT *
             FROM loan
             WHERE application_status = 'APPLIED'
+            ORDER BY created_at
             LIMIT :limit
             FOR UPDATE SKIP LOCKED
             """,
@@ -29,6 +30,7 @@ public interface LoanRepository extends JpaRepository<Loan, UUID> {
             SELECT *
             FROM loan
             WHERE application_status = 'UNDER_REVIEW'
+            ORDER BY created_at
             LIMIT :limit
             FOR UPDATE SKIP LOCKED
             """,
