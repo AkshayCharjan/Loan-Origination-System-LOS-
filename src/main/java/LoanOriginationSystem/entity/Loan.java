@@ -26,7 +26,6 @@ public class Loan {
     @Enumerated(EnumType.STRING)
     private LoanType loanType;
 
-    @Setter
     @Enumerated(EnumType.STRING)
     private ApplicationStatus applicationStatus;
     private LocalDateTime createdAt;
@@ -38,5 +37,29 @@ public class Loan {
         this.loanType = loanType;
         this.applicationStatus = ApplicationStatus.APPLIED;
         this.createdAt = LocalDateTime.now();
+    }
+
+    public void markAssignedToAgent() {
+        this.applicationStatus = ApplicationStatus.ASSIGNED_TO_AGENT;
+    }
+
+    public void approveBySystem() {
+        this.applicationStatus = ApplicationStatus.APPROVED_BY_SYSTEM;
+    }
+
+    public void rejectBySystem() {
+        this.applicationStatus = ApplicationStatus.REJECTED_BY_SYSTEM;
+    }
+
+    public void sendForReview() {
+        this.applicationStatus = ApplicationStatus.UNDER_REVIEW;
+    }
+
+    public void approveByAgent() {
+        this.applicationStatus = ApplicationStatus.APPROVED_BY_AGENT;
+    }
+
+    public void rejectByAgent() {
+        this.applicationStatus = ApplicationStatus.REJECTED_BY_AGENT;
     }
 }
