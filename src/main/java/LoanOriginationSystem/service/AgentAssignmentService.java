@@ -47,6 +47,11 @@ public class AgentAssignmentService {
     private void workerLoop(){
         while(true){
             assignAgents();
+            try {
+                Thread.sleep(1000); //sleep for 1 second
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
         }
     }
 
@@ -59,7 +64,7 @@ public class AgentAssignmentService {
                     .orElse(null);
 
             if (agent != null) {
-                agent.setStatus(AgentStatus.BUSY);
+                agent.markBusy();
 
                 LoanAssignment loanAssignment = new LoanAssignment();
                 loanAssignment.setLoan(loan);
@@ -75,7 +80,4 @@ public class AgentAssignmentService {
             }
         }
     }
-
-
-
 }
