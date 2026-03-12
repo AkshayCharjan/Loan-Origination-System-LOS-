@@ -52,8 +52,8 @@ public interface LoanRepository extends JpaRepository<Loan, UUID> {
            SELECT l.customerName AS customerName, COUNT(l) AS loanCount
            FROM Loan l
            WHERE l.applicationStatus IN (
-                LoanOriginationSystem.enums.ApplicationStatus.APPROVED_BY_SYSTEM,
-                LoanOriginationSystem.enums.ApplicationStatus.APPROVED_BY_AGENT
+                ApplicationStatus.APPROVED_BY_SYSTEM,
+                ApplicationStatus.APPROVED_BY_AGENT
                 )
            GROUP BY l.customerName
            ORDER BY COUNT(l) DESC
