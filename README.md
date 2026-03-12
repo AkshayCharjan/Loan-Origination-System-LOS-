@@ -1,8 +1,14 @@
-# **Loan Origination System (LOS)**
+# Loan Origination System (LOS)
 
-A backend service built with **Java Spring Boot** that simulates the lifecycle of a loan application.
+![Java](https://img.shields.io/badge/Java-17-orange)
+![Spring Boot](https://img.shields.io/badge/SpringBoot-3.x-brightgreen)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-blue)
+![Maven](https://img.shields.io/badge/Maven-Build-red)
+![JUnit](https://img.shields.io/badge/JUnit-Testing-green)
 
-The system processes loans automatically, assigns agents for manual review when required, and allows agents to make final approval decisions.
+A **Java Spring Boot backend system** that simulates an end-to-end **loan origination pipeline**.
+
+The platform processes loan applications using **concurrent background workers**, assigns agents for manual review when necessary, and supports final approval decisions while ensuring **safe parallel execution using database row-level locking**.
 
 ---
 
@@ -24,6 +30,22 @@ The system processes loans automatically, assigns agents for manual review when 
 - **Maven**
 - **SLF4J Logging**
 - **JUnit 5 + Mockito** (Unit Testing)
+
+---
+
+## Architecture Overview
+
+The system follows a **modular service-based architecture** with background workers.
+
+Main components:
+
+- **REST Controllers** handle incoming API requests.
+- **Services** contain business logic.
+- **Workers** process loans asynchronously.
+- **Repositories** interact with the PostgreSQL database.
+- **Database row locking** ensures safe concurrent processing.
+
+Workers continuously process loan applications and update statuses using database locking (`FOR UPDATE SKIP LOCKED`) to prevent duplicate processing.
 
 ---
 
