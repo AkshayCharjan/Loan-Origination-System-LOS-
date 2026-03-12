@@ -27,6 +27,13 @@ public class Agent {
 
     private UUID managerID;
 
-    @Setter
     private AgentStatus status;
+
+    public void markAvailable() {
+        this.status = AgentStatus.AVAILABLE;
+    }
+
+    public void markBusy() {
+        this.status = AgentStatus.BUSY;
+    }
 }
