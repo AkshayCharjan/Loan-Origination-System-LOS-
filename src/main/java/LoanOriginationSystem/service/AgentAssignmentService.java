@@ -10,15 +10,17 @@ import LoanOriginationSystem.repository.LoanRepository;
 import LoanOriginationSystem.service.notification.NotificationService;
 import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 @Service
 public class AgentAssignmentService {
+    private static final Logger log = LoggerFactory.getLogger(AgentAssignmentService.class);
     private final ExecutorService agentAssigner;
     private final AgentRepository agentRepository;
     private final LoanRepository loanRepository;
@@ -60,11 +62,14 @@ public class AgentAssignmentService {
         List<Loan> loansForReview = loanRepository.fetchLoansForReview(10);
 
         for(Loan loan: loansForReview) {
+            log.info("Loan picked for agent review: loanId={}", loan.getLoanId());
+            
             Agent agent = agentRepository.findFirstByStatus(AgentStatus.AVAILABLE)
                     .orElse(null);
 
             if (agent == null) {
-                break; // no available agents
+                log.warn("No available agents for loanId={}", loan.getLoanId());
+                break;
             }
 
             // create assignment
@@ -74,7 +79,6 @@ public class AgentAssignmentService {
 
             loanAssignmentRepository.save(assignment);
 
-            // update loan status
             loan.markAssignedToAgent();
             loanRepository.save(loan);
 
@@ -82,12 +86,13 @@ public class AgentAssignmentService {
             agent.markBusy();
             agentRepository.save(agent);
 
-            // notifications
+            log.info("Loan assigned: loanId={}, agentId={}", loan.getLoanId(), agent.getId());
+
+            //notifications
             notificationService.notifyAgent(agent.getId(), loan.getLoanId());
 
             if (agent.getManagerID() != null) {
-                notificationService.notifyManager( agent.getManagerID(), loan.getLoanId()
-                );
+                notificationService.notifyManager(agent.getManagerID(), loan.getLoanId());
             }
         }
     }

@@ -1,19 +1,21 @@
 package LoanOriginationSystem.service;
 
 import LoanOriginationSystem.entity.Loan;
-import LoanOriginationSystem.enums.ApplicationStatus;
 import LoanOriginationSystem.repository.LoanRepository;
 import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Random;
-import java.util.UUID;
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @Service
 public class LoanProcessorService {
+    private static final Logger log = LoggerFactory.getLogger(LoanProcessorService.class);
     private final ExecutorService loanProcessor;
     private final Random random = new Random();
     private final LoanRepository loanRepository;
@@ -54,10 +56,12 @@ public class LoanProcessorService {
                 }
 
                 loanRepository.save(loan);
+                log.info("Loan processor decision: loanId={}, decision={}", loan.getLoanId(),
+                        loan.getApplicationStatus());
             }
         } catch(InterruptedException e) {
             Thread.currentThread().interrupt();
-            System.out.println("Loan processor interrupted");
+            log.warn("Loan processor interrupted");
         }
     }
 }

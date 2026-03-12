@@ -2,16 +2,18 @@ package LoanOriginationSystem.service;
 
 import LoanOriginationSystem.entity.Loan;
 import LoanOriginationSystem.entity.LoanAssignment;
-import LoanOriginationSystem.enums.ApplicationStatus;
 import LoanOriginationSystem.repository.LoanAssignmentRepository;
 import LoanOriginationSystem.repository.LoanRepository;
 import LoanOriginationSystem.service.notification.NotificationService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
 @Service
 public class AgentDecisionService {
+    private static final Logger log = LoggerFactory.getLogger(AgentDecisionService.class);
 
     private final LoanRepository loanRepository;
     private final LoanAssignmentRepository assignmentRepository;
@@ -47,5 +49,6 @@ public class AgentDecisionService {
         }
 
         loanRepository.save(loan);
+        log.info("Agent decision recorded: loanId={}, agentId={}, decision={}", loanId, agentId, decision);
     }
 }
