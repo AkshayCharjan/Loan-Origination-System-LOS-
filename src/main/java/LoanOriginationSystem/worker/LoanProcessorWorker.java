@@ -7,25 +7,24 @@ import LoanOriginationSystem.service.LoanProcessorService;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 
 @Service
 public class LoanProcessorWorker {
 
     private final ExecutorService executor;
     private final LoanProcessorService processorService;
-    
-    @Value("${loan.processor.thread-count:5}")
-    private int threadCount;
 
-    public LoanProcessorWorker(LoanProcessorService processorService,
-                              @Value("${loan.processor.thread-count:5}") int threadCount) {
+    public LoanProcessorWorker(
+            LoanProcessorService processorService,
+            @Value("${loan.processor.thread-count:5}") int threadCount) {
         this.processorService = processorService;
-        this.threadCount = threadCount;
         this.executor = Executors.newFixedThreadPool(threadCount);
     }
 
     @PostConstruct
     public void startWorkers() {
+        int threadCount = ((ThreadPoolExecutor) executor).getCorePoolSize();
         for (int i = 0; i < threadCount; i++) {
             executor.submit(this::workerLoop);
         }

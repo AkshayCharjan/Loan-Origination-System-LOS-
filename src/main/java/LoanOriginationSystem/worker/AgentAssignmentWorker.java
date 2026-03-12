@@ -7,28 +7,24 @@ import LoanOriginationSystem.service.AgentAssignmentService;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 
 @Service
 public class AgentAssignmentWorker {
 
     private final ExecutorService executor;
     private final AgentAssignmentService assignmentService;
-    
-    @Value("${loan.agent-assignment.thread-count:5}")
-    private int threadCount;
-    
-    @Value("${loan.agent-assignment.processing-delay:1000}")
-    private long processingDelay;
 
-    public AgentAssignmentWorker(AgentAssignmentService assignmentService,
-                                @Value("${loan.agent-assignment.thread-count:5}") int threadCount) {
+    public AgentAssignmentWorker(
+            AgentAssignmentService assignmentService,
+            @Value("${loan.agent-assignment.thread-count:5}") int threadCount) {
         this.assignmentService = assignmentService;
-        this.threadCount = threadCount;
         this.executor = Executors.newFixedThreadPool(threadCount);
     }
 
     @PostConstruct
     public void startWorkers() {
+        int threadCount = ((ThreadPoolExecutor) executor).getCorePoolSize();
         for (int i = 0; i < threadCount; i++) {
             executor.submit(this::workerLoop);
         }
@@ -39,7 +35,7 @@ public class AgentAssignmentWorker {
             assignmentService.assignBatch();
 
             try {
-                Thread.sleep(processingDelay);
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
