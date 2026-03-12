@@ -7,6 +7,7 @@ import LoanOriginationSystem.enums.AgentStatus;
 import LoanOriginationSystem.repository.AgentRepository;
 import LoanOriginationSystem.repository.LoanAssignmentRepository;
 import LoanOriginationSystem.repository.LoanRepository;
+import LoanOriginationSystem.service.notification.NotificationService;
 import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -22,11 +23,17 @@ public class AgentAssignmentService {
     private final AgentRepository agentRepository;
     private final LoanRepository loanRepository;
     private final LoanAssignmentRepository loanAssignmentRepository;
+    private final NotificationService notificationService;
 
-    public AgentAssignmentService(AgentRepository agentRepository, LoanRepository loanRepository, LoanAssignmentRepository loanAssignmentRepository) {
+    public AgentAssignmentService(
+            AgentRepository agentRepository,
+            LoanRepository loanRepository,
+            LoanAssignmentRepository loanAssignmentRepository,
+            NotificationService notificationService){
         this.agentRepository = agentRepository;
         this.loanRepository = loanRepository;
         this.loanAssignmentRepository = loanAssignmentRepository;
+        this.notificationService = notificationService;
         this.agentAssigner = Executors.newFixedThreadPool(5);
     }
 
@@ -58,6 +65,13 @@ public class AgentAssignmentService {
                 loanAssignment.setLoan(loan);
                 loanAssignment.setAgent(agent);
                 agentRepository.save(agent);
+                loanAssignmentRepository.save(loanAssignment);
+
+                notificationService.notifyAgent(agent.getId(), loan.getLoanId());
+
+                if(agent.getManagerID() != null){
+                    notificationService.notifyManager(agent.getManagerID(), loan.getLoanId());
+                }
             }
         }
     }
