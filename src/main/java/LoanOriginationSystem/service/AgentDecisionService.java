@@ -53,8 +53,7 @@ public class AgentDecisionService {
         if (loan.getApplicationStatus() == ApplicationStatus.APPROVED_BY_AGENT ||
             loan.getApplicationStatus() == ApplicationStatus.REJECTED_BY_AGENT) {
             throw new LoanAlreadyDecidedException(
-                    "Loan " + loanId + " already has a decision"
-            );
+                    "Loan " + loanId + " already has a decision");
         }
 
         if("APPROVE".equalsIgnoreCase(decision)){
