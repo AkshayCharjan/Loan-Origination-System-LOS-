@@ -5,6 +5,7 @@ import LoanOriginationSystem.repository.LoanRepository;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,14 +16,20 @@ public class LoanProcessorService {
     private static final Logger log = LoggerFactory.getLogger(LoanProcessorService.class);
     private final Random random = new Random();
     private final LoanRepository loanRepository;
-    private final long processingDelay;
+    private long processingDelay;
 
     public LoanProcessorService(LoanRepository loanRepository) {
-        this(loanRepository, 25000);
+        this.loanRepository = loanRepository;
+        this.processingDelay = 25000;
     }
 
     public LoanProcessorService(LoanRepository loanRepository, long processingDelay) {
         this.loanRepository = loanRepository;
+        this.processingDelay = processingDelay;
+    }
+
+    @Value("${loan.processor.processing-delay:25000}")
+    public void setProcessingDelay(long processingDelay) {
         this.processingDelay = processingDelay;
     }
 

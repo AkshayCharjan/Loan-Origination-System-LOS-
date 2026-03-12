@@ -7,8 +7,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import static org.mockito.Mockito.*;
 
@@ -23,13 +21,13 @@ class LoanProcessorWorkerTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        loanProcessorWorker = new LoanProcessorWorker(processorService);
+        loanProcessorWorker = new LoanProcessorWorker(processorService, 5);
     }
 
     @Test
     @DisplayName("Should inject LoanProcessorService")
     void testWorkerInitialization_InjectsService() {
-        LoanProcessorWorker worker = new LoanProcessorWorker(processorService);
+        LoanProcessorWorker worker = new LoanProcessorWorker(processorService, 5);
 
         org.junit.jupiter.api.Assertions.assertNotNull(worker);
     }
@@ -39,17 +37,16 @@ class LoanProcessorWorkerTest {
     void testWorkerStartup_InitializesThreadPool() {
         LoanProcessorService service = mock(LoanProcessorService.class);
 
-        LoanProcessorWorker worker = new LoanProcessorWorker(service);
+        LoanProcessorWorker worker = new LoanProcessorWorker(service, 5);
         worker.startWorkers();
 
-        // Assert - just verify the worker was created
         org.junit.jupiter.api.Assertions.assertNotNull(worker);
     }
 
     @Test
     @DisplayName("Should have constructor with LoanProcessorService dependency")
     void testWorkerDependency_HasProcessorService() {
-        LoanProcessorWorker worker = new LoanProcessorWorker(processorService);
+        LoanProcessorWorker worker = new LoanProcessorWorker(processorService, 5);
 
         org.junit.jupiter.api.Assertions.assertNotNull(worker);
     }
@@ -78,20 +75,14 @@ class LoanProcessorWorkerTest {
     @DisplayName("Should handle concurrent worker execution")
     void testWorkerExecution_SupportsMultipleThreads() {
         LoanProcessorService service = mock(LoanProcessorService.class);
-        LoanProcessorWorker worker = new LoanProcessorWorker(service);
+        LoanProcessorWorker worker = new LoanProcessorWorker(service, 5);
 
-        // Act - just verify worker can be created
-        // Don't start actual threads in test
-
-        // Assert - worker should be created successfully
         org.junit.jupiter.api.Assertions.assertNotNull(worker);
     }
 
     @Test
     @DisplayName("Should create 5 worker threads")
     void testWorkerPool_Creates5Threads() {
-        // This is a design verification test
-        // The number of threads should be 5 as per the Executors.newFixedThreadPool(5)
         int expectedThreadCount = 5;
 
         org.junit.jupiter.api.Assertions.assertTrue(expectedThreadCount > 0, "Thread pool should have at least 1 thread");

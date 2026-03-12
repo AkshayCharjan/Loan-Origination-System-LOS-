@@ -52,7 +52,6 @@ class AgentDecisionServiceTest {
         
         when(assignmentRepository.findByLoan_LoanId(loanId)).thenReturn(Optional.empty());
 
-        // Act & Assert
         assertThrows(RuntimeException.class, () -> {
             agentDecisionService.decide(agentId, loanId, "APPROVE");
         });
@@ -64,8 +63,6 @@ class AgentDecisionServiceTest {
         UUID loanId = UUID.randomUUID();
         UUID agentId = UUID.randomUUID();
 
-        // Act & Assert - Service should accept valid parameters
-        // This test is simplified to verify basic functionality without deep mocking
         assertDoesNotThrow(() -> {
             when(assignmentRepository.findByLoan_LoanId(loanId)).thenReturn(Optional.empty());
             try {

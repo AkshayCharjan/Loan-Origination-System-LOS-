@@ -32,7 +32,6 @@ class MockNotificationServiceTest {
         UUID agentId = UUID.randomUUID();
         UUID loanId = UUID.randomUUID();
 
-        // Act & Assert
         assertDoesNotThrow(() -> notificationService.notifyAgent(agentId, loanId));
     }
 
@@ -42,7 +41,6 @@ class MockNotificationServiceTest {
         UUID managerId = UUID.randomUUID();
         UUID loanId = UUID.randomUUID();
 
-        // Act & Assert
         assertDoesNotThrow(() -> notificationService.notifyManager(managerId, loanId));
     }
 
@@ -52,7 +50,6 @@ class MockNotificationServiceTest {
         String phone = "1234567890";
         UUID loanId = UUID.randomUUID();
 
-        // Act & Assert
         assertDoesNotThrow(() -> notificationService.notifyCustomer(phone, loanId));
     }
 
@@ -63,7 +60,6 @@ class MockNotificationServiceTest {
         UUID agentId2 = UUID.randomUUID();
         UUID loanId = UUID.randomUUID();
 
-        // Act & Assert
         assertDoesNotThrow(() -> {
             notificationService.notifyAgent(agentId1, loanId);
             notificationService.notifyAgent(agentId2, loanId);
@@ -76,20 +72,5 @@ class MockNotificationServiceTest {
         boolean isInstance = notificationService instanceof NotificationService;
 
         assertTrue(isInstance);
-    }
-
-    @Test
-    @DisplayName("Should be compatible with NotificationService interface methods")
-    void testMockNotificationService_HasRequiredMethods() {
-        UUID agentId = UUID.randomUUID();
-        UUID loanId = UUID.randomUUID();
-        String phone = "1234567890";
-
-        // Act & Assert - All methods should exist and not throw
-        assertDoesNotThrow(() -> {
-            notificationService.notifyAgent(agentId, loanId);
-            notificationService.notifyManager(agentId, loanId);
-            notificationService.notifyCustomer(phone, loanId);
-        });
     }
 }
