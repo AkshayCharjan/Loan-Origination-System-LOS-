@@ -23,6 +23,7 @@ public class Loan {
     private String customerName;
     private String customerPhone;
     private int loanAmount;
+    @Enumerated(EnumType.STRING)
     private LoanType loanType;
 
     @Setter
