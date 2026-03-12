@@ -339,6 +339,81 @@ GET /api/v1/assignments
 
 ---
 
+---
+
+## System Demonstration
+
+The following examples show the system working end-to-end, including API submission, background worker processing, and the resulting database state.
+
+---
+
+### Example API Request
+
+Submitting a loan application using the REST API.
+
+![Submit Loan API](screenshots/submit-loan-api.png)
+
+Example request:
+
+```
+POST /api/v1/loans
+```
+
+Request body:
+
+```json
+{
+  "customerName": "Aditya Wankhede",
+  "customerPhone": "9974998887",
+  "loanAmount": 1000,
+  "loanType": "AUTO"
+}
+```
+
+Response:
+
+```json
+{
+  "loanId": "2104260c-0d4d-40ad-ab09-9f601a871e71",
+  "message": "Loan application submitted"
+}
+```
+
+---
+
+### Example Worker Execution
+
+Background workers automatically process loan applications and move them through the loan lifecycle.
+
+![Worker Execution Logs](screenshots/worker-execution.png)
+
+The logs demonstrate the internal workflow:
+
+- Loan creation
+- Automatic system decision
+- Loans moved to **UNDER_REVIEW**
+- Agent assignment
+- Agent decision recorded
+
+---
+
+### Example Database State After Processing
+
+Below is the state of the `loan` table after background workers process applications and agent decisions are recorded.
+
+![Loan Table State](screenshots/loan-table-state.png)
+
+The table demonstrates different lifecycle states of loan applications:
+
+- `APPLIED`
+- `APPROVED_BY_SYSTEM`
+- `REJECTED_BY_SYSTEM`
+- `UNDER_REVIEW`
+- `ASSIGNED_TO_AGENT`
+- `APPROVED_BY_AGENT`
+
+---
+
 ## **Error Handling**
 
 Custom exceptions are used for common scenarios.
