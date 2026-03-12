@@ -13,6 +13,8 @@ public interface LoanAssignmentRepository extends JpaRepository<LoanAssignment, 
 
     Optional<LoanAssignment> findByLoan_LoanId(UUID loanId);
 
+    Optional<LoanAssignment> findByLoan_LoanIdAndAgent_Id(UUID loanId, UUID agentId);
+
     @Query("""
            SELECT new LoanOriginationSystem.dto.LoanAssignmentViewDTO(
                l.loanId,

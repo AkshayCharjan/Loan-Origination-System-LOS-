@@ -3,6 +3,10 @@ package LoanOriginationSystem.service;
 import LoanOriginationSystem.entity.Agent;
 import LoanOriginationSystem.entity.Loan;
 import LoanOriginationSystem.entity.LoanAssignment;
+import LoanOriginationSystem.enums.ApplicationStatus;
+import LoanOriginationSystem.exception.InvalidDecisionException;
+import LoanOriginationSystem.exception.LoanAlreadyDecidedException;
+import LoanOriginationSystem.exception.LoanNotAssignedException;
 import LoanOriginationSystem.repository.AgentRepository;
 import LoanOriginationSystem.repository.LoanAssignmentRepository;
 import LoanOriginationSystem.repository.LoanRepository;
@@ -33,16 +37,25 @@ public class AgentDecisionService {
     }
 
     public void decide(UUID agentId, UUID loanId, String decision){
-
-        LoanAssignment assignment = assignmentRepository
-                .findByLoan_LoanId(loanId)
-                .orElseThrow(() -> new RuntimeException("Loan not assigned"));
-
-        if(!assignment.getAgent().getId().equals(agentId)){
-            throw new RuntimeException("Agent not authorized");
+        
+        if (!decision.equalsIgnoreCase("APPROVE") &&
+            !decision.equalsIgnoreCase("REJECT")) {
+            throw new InvalidDecisionException("Decision must be APPROVE or REJECT");
         }
 
+        LoanAssignment assignment = assignmentRepository
+                .findByLoan_LoanIdAndAgent_Id(loanId, agentId)
+                .orElseThrow(() -> new LoanNotAssignedException(
+                        "Loan " + loanId + " is not assigned to agent " + agentId));
+
         Loan loan = assignment.getLoan();
+
+        if (loan.getApplicationStatus() == ApplicationStatus.APPROVED_BY_AGENT ||
+            loan.getApplicationStatus() == ApplicationStatus.REJECTED_BY_AGENT) {
+            throw new LoanAlreadyDecidedException(
+                    "Loan " + loanId + " already has a decision"
+            );
+        }
 
         if("APPROVE".equalsIgnoreCase(decision)){
             loan.approveByAgent();
