@@ -23,7 +23,11 @@ public class LoanMonitoringService {
         return loanRepository.countLoansByStatus();
     }
 
-    public Page<Loan> getLoansByStatus( ApplicationStatus status, int page, int size){
+    public Page<Loan> getLoansByStatus(ApplicationStatus status, int page, int size){
         return loanRepository.findByApplicationStatus(status, PageRequest.of(page, size));
+    }
+
+    public Page<Loan> getAllLoans(int page, int size){
+        return loanRepository.findAll(PageRequest.of(page, size));
     }
 }

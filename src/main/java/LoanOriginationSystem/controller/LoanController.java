@@ -47,6 +47,13 @@ public class LoanController {
         );
     }
 
+    @GetMapping("/all")
+    public ResponseEntity<Page<Loan>> getAllLoans(
+            @RequestParam int page,
+            @RequestParam int size){
+        return ResponseEntity.ok(loanMonitoringService.getAllLoans(page, size));
+    }
+
     @GetMapping
     public ResponseEntity<Page<Loan>> getLoansByStatus(
             @RequestParam ApplicationStatus status,

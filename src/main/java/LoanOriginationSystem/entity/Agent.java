@@ -1,9 +1,7 @@
 package LoanOriginationSystem.entity;
 
 import LoanOriginationSystem.enums.AgentStatus;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.UuidGenerator;
@@ -27,6 +25,7 @@ public class Agent {
 
     private UUID managerID;
 
+    @Enumerated(EnumType.STRING)
     private AgentStatus status;
 
     public void markAvailable() {
