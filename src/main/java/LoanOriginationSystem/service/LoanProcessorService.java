@@ -32,13 +32,13 @@ public class LoanProcessorService {
         }
     }
 
-    @Transactional
     private void processLoans() {
         while(true) {
             processBatch();
         }
     }
 
+    @Transactional
     private void processBatch(){
         try {
             List<Loan> loans = loanRepository.fetchLoansForProcessing(10);
