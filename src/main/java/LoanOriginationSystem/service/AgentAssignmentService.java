@@ -63,20 +63,31 @@ public class AgentAssignmentService {
             Agent agent = agentRepository.findFirstByStatus(AgentStatus.AVAILABLE)
                     .orElse(null);
 
-            if (agent != null) {
-                agent.markBusy();
+            if (agent == null) {
+                break; // no available agents
+            }
 
-                LoanAssignment loanAssignment = new LoanAssignment();
-                loanAssignment.setLoan(loan);
-                loanAssignment.setAgent(agent);
-                agentRepository.save(agent);
-                loanAssignmentRepository.save(loanAssignment);
+            // create assignment
+            LoanAssignment assignment = new LoanAssignment();
+            assignment.setLoan(loan);
+            assignment.setAgent(agent);
 
-                notificationService.notifyAgent(agent.getId(), loan.getLoanId());
+            loanAssignmentRepository.save(assignment);
 
-                if(agent.getManagerID() != null){
-                    notificationService.notifyManager(agent.getManagerID(), loan.getLoanId());
-                }
+            // update loan status
+            loan.markAssignedToAgent();
+            loanRepository.save(loan);
+
+            // mark agent busy
+            agent.markBusy();
+            agentRepository.save(agent);
+
+            // notifications
+            notificationService.notifyAgent(agent.getId(), loan.getLoanId());
+
+            if (agent.getManagerID() != null) {
+                notificationService.notifyManager( agent.getManagerID(), loan.getLoanId()
+                );
             }
         }
     }
