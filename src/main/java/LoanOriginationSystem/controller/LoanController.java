@@ -6,6 +6,7 @@ import LoanOriginationSystem.entity.Loan;
 import LoanOriginationSystem.enums.ApplicationStatus;
 import LoanOriginationSystem.service.LoanMonitoringService;
 import LoanOriginationSystem.service.LoanRegistrationService;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +31,7 @@ public class LoanController {
 
     @PostMapping
     public ResponseEntity<Map<String, Object>> submitLoan(
-            @RequestBody LoanRequestDTO loanRequestDTO) {
+            @Valid @RequestBody LoanRequestDTO loanRequestDTO) {
 
         UUID loanId = loanRegistrationService.registerLoan(loanRequestDTO);
         return ResponseEntity.ok( Map.of(
