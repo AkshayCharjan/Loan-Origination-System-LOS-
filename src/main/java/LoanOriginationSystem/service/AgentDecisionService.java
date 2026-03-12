@@ -39,11 +39,11 @@ public class AgentDecisionService {
         Loan loan = assignment.getLoan();
 
         if("APPROVE".equalsIgnoreCase(decision)){
-            loan.setApplicationStatus(ApplicationStatus.APPROVED_BY_AGENT);
+            loan.approveByAgent();
             notificationService.notifyCustomer(loan.getCustomerPhone(), loanId);
         }
         else{
-            loan.setApplicationStatus(ApplicationStatus.REJECTED_BY_AGENT);
+            loan.rejectByAgent();
         }
 
         loanRepository.save(loan);
