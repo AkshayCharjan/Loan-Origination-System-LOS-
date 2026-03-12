@@ -46,11 +46,11 @@ public class LoanProcessorService {
 
                 int decision = random.nextInt(3);
                 if (decision == 0) {
-                    loan.setApplicationStatus(ApplicationStatus.APPROVED_BY_SYSTEM);
+                    loan.approveBySystem();
                 } else if (decision == 1) {
-                    loan.setApplicationStatus(ApplicationStatus.REJECTED_BY_SYSTEM);
+                    loan.rejectBySystem();
                 } else {
-                    loan.setApplicationStatus(ApplicationStatus.UNDER_REVIEW);
+                    loan.sendForReview();
                 }
 
                 loanRepository.save(loan);
