@@ -2,8 +2,11 @@ package LoanOriginationSystem.controller;
 
 import LoanOriginationSystem.dto.LoanRequestDTO;
 import LoanOriginationSystem.dto.LoanStatusCountProjection;
+import LoanOriginationSystem.entity.Loan;
+import LoanOriginationSystem.enums.ApplicationStatus;
 import LoanOriginationSystem.service.LoanMonitoringService;
 import LoanOriginationSystem.service.LoanRegistrationService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,11 +33,9 @@ public class LoanController {
             @RequestBody LoanRequestDTO loanRequestDTO) {
 
         UUID loanId = loanRegistrationService.registerLoan(loanRequestDTO);
-        return ResponseEntity.ok(
-                Map.of(
+        return ResponseEntity.ok( Map.of(
                         "message", "Loan application submitted",
-                        "loanId", loanId
-                )
+                        "loanId", loanId)
         );
     }
 
@@ -43,6 +44,16 @@ public class LoanController {
 
         return ResponseEntity.ok(
                 loanMonitoringService.getLoanStatusCounts()
+        );
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<Loan>> getLoansByStatus(
+            @RequestParam ApplicationStatus status,
+            @RequestParam int page,
+            @RequestParam int size){
+
+        return ResponseEntity.ok(loanMonitoringService.getLoansByStatus(status, page, size)
         );
     }
 }

@@ -1,7 +1,11 @@
 package LoanOriginationSystem.service;
 
 import LoanOriginationSystem.dto.LoanStatusCountProjection;
+import LoanOriginationSystem.entity.Loan;
+import LoanOriginationSystem.enums.ApplicationStatus;
 import LoanOriginationSystem.repository.LoanRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,5 +21,9 @@ public class LoanMonitoringService {
 
     public List<LoanStatusCountProjection> getLoanStatusCounts() {
         return loanRepository.countLoansByStatus();
+    }
+
+    public Page<Loan> getLoansByStatus( ApplicationStatus status, int page, int size){
+        return loanRepository.findByApplicationStatus(status, PageRequest.of(page, size));
     }
 }
