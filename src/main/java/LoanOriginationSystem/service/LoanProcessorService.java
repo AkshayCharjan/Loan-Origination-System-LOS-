@@ -15,9 +15,15 @@ public class LoanProcessorService {
     private static final Logger log = LoggerFactory.getLogger(LoanProcessorService.class);
     private final Random random = new Random();
     private final LoanRepository loanRepository;
+    private final long processingDelay;
 
     public LoanProcessorService(LoanRepository loanRepository) {
+        this(loanRepository, 25000);
+    }
+
+    public LoanProcessorService(LoanRepository loanRepository, long processingDelay) {
         this.loanRepository = loanRepository;
+        this.processingDelay = processingDelay;
     }
 
     @Transactional
@@ -26,7 +32,7 @@ public class LoanProcessorService {
 
         for (Loan loan : loans) {
             try {
-                Thread.sleep(25000);
+                Thread.sleep(processingDelay);
             } catch(InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
