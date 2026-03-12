@@ -19,6 +19,12 @@ public class Agent {
     @UuidGenerator
     private UUID id;
 
+    @Setter
+    private String name;
+
+    @Setter
+    private String email;
+
     private UUID managerID;
 
     @Setter
