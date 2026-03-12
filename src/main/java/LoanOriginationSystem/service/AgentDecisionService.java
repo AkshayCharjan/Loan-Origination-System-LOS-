@@ -1,7 +1,9 @@
 package LoanOriginationSystem.service;
 
+import LoanOriginationSystem.entity.Agent;
 import LoanOriginationSystem.entity.Loan;
 import LoanOriginationSystem.entity.LoanAssignment;
+import LoanOriginationSystem.repository.AgentRepository;
 import LoanOriginationSystem.repository.LoanAssignmentRepository;
 import LoanOriginationSystem.repository.LoanRepository;
 import LoanOriginationSystem.service.notification.NotificationService;
@@ -18,14 +20,16 @@ public class AgentDecisionService {
     private final LoanRepository loanRepository;
     private final LoanAssignmentRepository assignmentRepository;
     private final NotificationService notificationService;
+    private final AgentRepository agentRepository;
 
     public AgentDecisionService(
             LoanRepository loanRepository,
             LoanAssignmentRepository assignmentRepository,
-            NotificationService notificationService) {
+            NotificationService notificationService, AgentRepository agentRepository) {
         this.loanRepository = loanRepository;
         this.assignmentRepository = assignmentRepository;
         this.notificationService = notificationService;
+        this.agentRepository = agentRepository;
     }
 
     public void decide(UUID agentId, UUID loanId, String decision){
@@ -48,7 +52,11 @@ public class AgentDecisionService {
             loan.rejectByAgent();
         }
 
+        Agent agent = assignment.getAgent();
+        agent.markAvailable();
+        agentRepository.save(agent);
         loanRepository.save(loan);
-        log.info("Agent decision recorded: loanId={}, agentId={}, decision={}", loanId, agentId, decision);
+        log.info("Agent decision recorded: loanId={}, customerName={}, agentId={}, agentName={}, decision={}",
+                loanId, loan.getCustomerName(), agentId, agent.getName(), decision);
     }
 }

@@ -26,7 +26,7 @@ public class LoanProcessorService {
 
         for (Loan loan : loans) {
             try {
-                Thread.sleep(25000); //simulate System checks
+                Thread.sleep(25000);
             } catch(InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
@@ -41,8 +41,8 @@ public class LoanProcessorService {
             }
 
             loanRepository.save(loan);
-            log.info("Loan processor decision: loanId={}, decision={}", loan.getLoanId(),
-                    loan.getApplicationStatus());
+            log.info("System decision: loanId={}, customer={}, decision={}", loan.getLoanId(),
+                    loan.getCustomerName(), loan.getApplicationStatus());
         }
     }
 }

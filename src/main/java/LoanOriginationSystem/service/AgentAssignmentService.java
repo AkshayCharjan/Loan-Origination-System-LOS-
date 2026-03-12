@@ -39,13 +39,18 @@ public class AgentAssignmentService {
         List<Loan> loansForReview = loanRepository.fetchLoansForReview(10);
 
         for(Loan loan: loansForReview) {
-            log.info("Loan picked for agent review: loanId={}", loan.getLoanId());
+            log.info("Loan picked for agent review: loanId={}, customer={}", loan.getLoanId(), loan.getCustomerName());
             
             Agent agent = agentRepository.findFirstByStatus(AgentStatus.AVAILABLE)
                     .orElse(null);
 
             if (agent == null) {
                 log.warn("No available agents for loanId={}", loan.getLoanId());
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
                 break;
             }
 
@@ -63,7 +68,8 @@ public class AgentAssignmentService {
             agent.markBusy();
             agentRepository.save(agent);
 
-            log.info("Loan assigned: loanId={}, agentId={}", loan.getLoanId(), agent.getId());
+            log.info("Loan assigned: loanId={}, customer={}, agentId={}, agentName={}", loan.getLoanId(),
+                    loan.getCustomerName(), agent.getId(), agent.getName());
 
             //notifications
             notificationService.notifyAgent(agent.getId(), loan.getLoanId());
