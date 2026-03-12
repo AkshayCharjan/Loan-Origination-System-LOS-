@@ -1,0 +1,725 @@
+{
+  "info": {
+    "_postman_id": "1fa08a0a-ef5c-4e9d-8dcb-1c78f60c9373",
+    "name": "Loan Origination System APIs",
+    "description": "Postman collection for testing Loan Origination System APIs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "27631128"
+  },
+  "item": [
+    {
+      "name": "Agent Decision",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"decision\": \"APPROVE\"\n}\n\n"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/v1/agents/{{agentId}}/loans/{{loanId}}/decision",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "agents",
+            "{{agentId}}",
+            "loans",
+            "{{loanId}}",
+            "decision"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Agent Decision Success: Approve",
+          "originalRequest": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"decision\": \"REJECT\"\n}\n\n"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/v1/agents/{{agentId}}/loans/{{loanId}}/decision",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "agents",
+                "{{agentId}}",
+                "loans",
+                "{{loanId}}",
+                "decision"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "text/plain;charset=UTF-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "17"
+            },
+            {
+              "key": "Date",
+              "value": "Thu, 12 Mar 2026 15:49:27 GMT"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=60"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            }
+          ],
+          "cookie": [],
+          "body": "Decision recorded"
+        },
+        {
+          "name": "Agent Decision Failure: Deciding unassigned loan",
+          "originalRequest": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"decision\": \"APPROVE\"\n}\n\n"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/v1/agents/{{agentId}}/loans/{{loanId}}/decision",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "agents",
+                "{{agentId}}",
+                "loans",
+                "{{loanId}}",
+                "decision"
+              ]
+            }
+          },
+          "status": "Not Found",
+          "code": 404,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "text/plain;charset=UTF-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "103"
+            },
+            {
+              "key": "Date",
+              "value": "Thu, 12 Mar 2026 15:59:03 GMT"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=60"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            }
+          ],
+          "cookie": [],
+          "body": "Loan 3e74f192-8241-4a31-b548-36dd4f7dc354 is not assigned to agent cd762a3e-991e-4f45-a772-34df55f6d153"
+        },
+        {
+          "name": "Agent Decision Failure: Loan already decided by Agent",
+          "originalRequest": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"decision\": \"APPROVE\"\n}\n\n"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/v1/agents/{{agentId}}/loans/{{loanId}}/decision",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "agents",
+                "{{agentId}}",
+                "loans",
+                "{{loanId}}",
+                "decision"
+              ]
+            }
+          },
+          "status": "Conflict",
+          "code": 409,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "text/plain;charset=UTF-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "64"
+            },
+            {
+              "key": "Date",
+              "value": "Thu, 12 Mar 2026 16:02:08 GMT"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=60"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            }
+          ],
+          "cookie": [],
+          "body": "Loan 3e74f192-8241-4a31-b548-36dd4f7dc355 already has a decision"
+        },
+        {
+          "name": "Agent Decision Failure: Invalid Decision",
+          "originalRequest": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"decision\": \"MAY BE\"\n}\n\n"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/v1/agents/{{agentId}}/loans/{{loanId}}/decision",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "agents",
+                "{{agentId}}",
+                "loans",
+                "{{loanId}}",
+                "decision"
+              ]
+            }
+          },
+          "status": "Bad Request",
+          "code": 400,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "text/plain;charset=UTF-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "34"
+            },
+            {
+              "key": "Date",
+              "value": "Thu, 12 Mar 2026 16:04:15 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "close"
+            }
+          ],
+          "cookie": [],
+          "body": "Decision must be APPROVE or REJECT"
+        }
+      ]
+    },
+    {
+      "name": "Get Loan Status Counts",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/v1/loans/status-count",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "loans",
+            "status-count"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Loans By Status",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/v1/loans?status={{status}}&page=0&size=10",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "loans"
+          ],
+          "query": [
+            {
+              "key": "status",
+              "value": "{{status}}"
+            },
+            {
+              "key": "page",
+              "value": "0"
+            },
+            {
+              "key": "size",
+              "value": "10"
+            }
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Get Loans By Status",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/v1/loans?status={{status}}&page=0&size=10",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "loans"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "{{status}}"
+                },
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            },
+            {
+              "key": "Date",
+              "value": "Thu, 12 Mar 2026 16:07:22 GMT"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=60"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"totalElements\": 14,\n    \"totalPages\": 2,\n    \"first\": true,\n    \"last\": false,\n    \"size\": 10,\n    \"content\": [\n        {\n            \"loanId\": \"9dcc226a-376b-45b5-b7cb-fcf68572f6bf\",\n            \"customerName\": \"Ganesh Agrawal\",\n            \"customerPhone\": \"9974998887\",\n            \"loanAmount\": 500000,\n            \"loanType\": \"AUTO\",\n            \"applicationStatus\": \"APPROVED_BY_SYSTEM\",\n            \"createdAt\": \"2026-03-12T18:31:35.94999\"\n        },\n        {\n            \"loanId\": \"56d469b7-9188-41db-8d79-ac7e3d49bed9\",\n            \"customerName\": \"Shreya G\",\n            \"customerPhone\": \"9974998887\",\n            \"loanAmount\": 500000,\n            \"loanType\": \"AUTO\",\n            \"applicationStatus\": \"APPROVED_BY_SYSTEM\",\n            \"createdAt\": \"2026-03-12T18:31:51.887716\"\n        },\n        {\n            \"loanId\": \"12733420-044c-4eac-a310-0d19d3b3e50b\",\n            \"customerName\": \"Hari S\",\n            \"customerPhone\": \"9974998887\",\n            \"loanAmount\": 500000,\n            \"loanType\": \"AUTO\",\n            \"applicationStatus\": \"APPROVED_BY_SYSTEM\",\n            \"createdAt\": \"2026-03-12T18:32:14.407411\"\n        },\n        {\n            \"loanId\": \"7692234e-39ef-40c1-82be-017c17a8987e\",\n            \"customerName\": \"Kushal A\",\n            \"customerPhone\": \"9974998887\",\n            \"loanAmount\": 500000,\n            \"loanType\": \"AUTO\",\n            \"applicationStatus\": \"APPROVED_BY_SYSTEM\",\n            \"createdAt\": \"2026-03-12T18:32:22.318731\"\n        },\n        {\n            \"loanId\": \"0fa19ea5-b25b-4cb5-a817-570d2465113b\",\n            \"customerName\": \"Raj Dubey\",\n            \"customerPhone\": \"9974998887\",\n            \"loanAmount\": 700000,\n            \"loanType\": \"AUTO\",\n            \"applicationStatus\": \"APPROVED_BY_SYSTEM\",\n            \"createdAt\": \"2026-03-12T17:02:20.568419\"\n        },\n        {\n            \"loanId\": \"a277147b-a665-40a2-a3fa-4d9af147d2ed\",\n            \"customerName\": \"Ayana C\",\n            \"customerPhone\": \"9974998887\",\n            \"loanAmount\": 500000,\n            \"loanType\": \"AUTO\",\n            \"applicationStatus\": \"APPROVED_BY_SYSTEM\",\n            \"createdAt\": \"2026-03-12T18:32:57.840863\"\n        },\n        {\n            \"loanId\": \"1c197b30-90e3-4618-890c-fb18e44a81fe\",\n            \"customerName\": \"Sathish C\",\n            \"customerPhone\": \"9974998887\",\n            \"loanAmount\": 500000,\n            \"loanType\": \"AUTO\",\n            \"applicationStatus\": \"APPROVED_BY_SYSTEM\",\n            \"createdAt\": \"2026-03-12T18:33:05.017123\"\n        },\n        {\n            \"loanId\": \"5e275d0c-b5c7-4d63-b53c-a2c06be66413\",\n            \"customerName\": \"Praveen Patil\",\n            \"customerPhone\": \"9974998887\",\n            \"loanAmount\": 100000,\n            \"loanType\": \"AUTO\",\n            \"applicationStatus\": \"APPROVED_BY_SYSTEM\",\n            \"createdAt\": \"2026-03-12T18:18:07.707059\"\n        },\n        {\n            \"loanId\": \"bdb3d8fd-a509-4a66-9efa-c74bc17ffc02\",\n            \"customerName\": \"Aryan Singh\",\n            \"customerPhone\": \"9974998887\",\n            \"loanAmount\": 100000,\n            \"loanType\": \"AUTO\",\n            \"applicationStatus\": \"APPROVED_BY_SYSTEM\",\n            \"createdAt\": \"2026-03-12T18:28:40.3969\"\n        },\n        {\n            \"loanId\": \"ec112b3a-f574-4a26-9db0-164c0c311e3b\",\n            \"customerName\": \"Amit Patel\",\n            \"customerPhone\": \"9974998887\",\n            \"loanAmount\": 100000,\n            \"loanType\": \"AUTO\",\n            \"applicationStatus\": \"APPROVED_BY_SYSTEM\",\n            \"createdAt\": \"2026-03-12T18:30:09.479907\"\n        }\n    ],\n    \"number\": 0,\n    \"sort\": {\n        \"empty\": true,\n        \"unsorted\": true,\n        \"sorted\": false\n    },\n    \"numberOfElements\": 10,\n    \"pageable\": {\n        \"pageNumber\": 0,\n        \"pageSize\": 10,\n        \"sort\": {\n            \"empty\": true,\n            \"unsorted\": true,\n            \"sorted\": false\n        },\n        \"offset\": 0,\n        \"unpaged\": false,\n        \"paged\": true\n    },\n    \"empty\": false\n}"
+        }
+      ]
+    },
+    {
+      "name": "Get Top Customers",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/v1/customers/top",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "customers",
+            "top"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Get Top Customers",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/v1/customers/top",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "customers",
+                "top"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            },
+            {
+              "key": "Date",
+              "value": "Thu, 12 Mar 2026 16:06:45 GMT"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=60"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            }
+          ],
+          "cookie": [],
+          "body": "[\n    {\n        \"loanCount\": 3,\n        \"customerName\": \"Aditi Wankhede\"\n    },\n    {\n        \"loanCount\": 1,\n        \"customerName\": \"Ayana C\"\n    },\n    {\n        \"loanCount\": 1,\n        \"customerName\": \"Kushal A\"\n    }\n]"
+        }
+      ]
+    },
+    {
+      "name": "CreateAgent",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Amit Pandey\",\n  \"email\": \"amit.pandey@gmail.com\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/v1/agents",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "agents"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GetAgents",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/v1/agents",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "agents"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GetAllLoans",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/v1/loans/all?page=0&size=10",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "loans",
+            "all"
+          ],
+          "query": [
+            {
+              "key": "page",
+              "value": "0"
+            },
+            {
+              "key": "size",
+              "value": "10"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "LoanAssignments",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/v1/assignments",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "assignments"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Submit Loan",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"customerName\": \"Aditya Wankhede\",\n  \"customerPhone\": \"9974998887\",\n  \"loanAmount\": 1000,\n  \"loanType\": \"AUTO\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/v1/loans",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "loans"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Submit Loan_success",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerName\": \"Aditya Wankhede\",\n  \"customerPhone\": \"9974998887\",\n  \"loanAmount\": 50000,\n  \"loanType\": \"AUTO\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/v1/loans",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "loans"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            },
+            {
+              "key": "Date",
+              "value": "Thu, 12 Mar 2026 15:56:26 GMT"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=60"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"loanId\": \"a5f69d83-f400-417a-8d18-b79eee514375\",\n    \"message\": \"Loan application submitted\"\n}"
+        },
+        {
+          "name": "Submit Loan Failure: LoanAmount must be positive",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerName\": \"Aditya Wankhede\",\n  \"customerPhone\": \"9974998887\",\n  \"loanAmount\": -100,\n  \"loanType\": \"AUTO\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/v1/loans",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "loans"
+              ]
+            }
+          },
+          "status": "Bad Request",
+          "code": 400,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            },
+            {
+              "key": "Date",
+              "value": "Thu, 12 Mar 2026 16:16:33 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "close"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"timestamp\": \"2026-03-12T16:16:33.362+00:00\",\n    \"status\": 400,\n    \"error\": \"Bad Request\",\n    \"path\": \"/api/v1/loans\"\n}"
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "agentId",
+      "value": "22222222-2222-2222-2222-222222222222"
+    },
+    {
+      "key": "loanId",
+      "value": "REPLACE_WITH_LOAN_ID"
+    }
+  ]
+}
