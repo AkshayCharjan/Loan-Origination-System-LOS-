@@ -287,12 +287,6 @@ Submit loan
 POST /api/v1/loans
 ```
 
-Get all loans
-
-```
-GET /api/v1/loans/all
-```
-
 Get loans by status
 
 ```
@@ -361,15 +355,59 @@ A **global exception handler** converts these into appropriate HTTP responses.
 
 ---
 
-## **Running the Application**
+## Running the Application
 
-### **1. Create Database**
+Follow the steps below to run the application locally.
+
+### 1. Install Prerequisites
+
+Ensure the following software is installed on your system:
+
+- **Java 17**
+- **Maven**
+- **PostgreSQL**
+
+You can verify installations using:
+
+```
+java -version
+mvn -version
+psql --version
+```
+
+---
+
+### 2. Start PostgreSQL
+
+Start the PostgreSQL service and open the PostgreSQL CLI.
+
+```
+psql -U postgres
+```
+
+---
+
+### 3. Create the Database
+
+Create a database for the application.
 
 ```sql
 CREATE DATABASE los_db;
 ```
 
-### **2. Configure `application.properties`**
+Exit the PostgreSQL CLI after creating the database.
+
+---
+
+### 4. Configure Database Credentials
+
+Open the file:
+
+```
+src/main/resources/application.properties
+```
+
+Update the database configuration according to your PostgreSQL setup:
 
 ```
 spring.datasource.url=jdbc:postgresql://localhost:5432/los_db
@@ -379,24 +417,43 @@ spring.datasource.password=postgres
 spring.jpa.hibernate.ddl-auto=update
 ```
 
-### **3. Build Project**
+---
+
+### 5. Build the Project
+
+Navigate to the project root directory and run:
 
 ```
 mvn clean install
 ```
 
-### **4. Run Application**
+This will compile the project and download all required dependencies.
+
+---
+
+### 6. Run the Application
+
+Start the Spring Boot application using:
 
 ```
 mvn spring-boot:run
 ```
 
-Server runs on:
+---
+
+### 7. Access the Application
+
+Once the application starts successfully, the server will be available at:
 
 ```
 http://localhost:8080
 ```
 
+You can now test the APIs using:
+
+- The **Postman collection** included in the repository
+- Any REST client such as Postman or curl
+  
 ---
 
 ## **Testing**
